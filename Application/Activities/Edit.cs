@@ -35,7 +35,15 @@ namespace Application.Activities
                 if (activity == null)
                     throw new Exception("Could not find activity");
 
+
+                // Convert local date to UTC
+                if (request.Activity.Date.Kind == DateTimeKind.Local || request.Activity.Date.Kind == DateTimeKind.Unspecified)
+                {
+                    request.Activity.Date = request.Activity.Date.ToUniversalTime();
+                }
+
                 _mapper.Map(request.Activity, activity);
+
 
                 await _context.SaveChangesAsync();
             }
